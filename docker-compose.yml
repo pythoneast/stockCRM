@@ -1,0 +1,30 @@
+version: '2.3'
+
+services:
+  postgres:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    restart: always
+    build: 
+      context: ./web
+      target: dev
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    links:
+      - postgres:postgres
+    volumes:
+      - ./web:/usr/src/app
+      - ./data:/usr/src/app/data
+      - ./static:/usr/src/app/static
+      - ./media:/usr/src/app/media
+
+volumes:
+  pgdata:
+

@@ -1,0 +1,43 @@
+version: '2.3'
+
+services:
+  web:
+    restart: always
+    build: ./web
+    expose:
+      - "8000"
+    links:
+      - postgres:postgres
+    volumes:
+      - /usr/src/app
+      - /usr/src/app/data
+      - /usr/src/app/static
+      - /usr/src/app/media
+    command: /usr/local/bin/gunicorn stockCRM.wsgi:application -w 2 -b :8000
+
+  nginx:
+    restart: always
+    build: ./nginx/
+    expose:
+      - 8080
+    ports:
+      - "80:8080"
+    volumes:
+      - /www/static
+      - /www/media
+    volumes_from:
+      - web
+    links:
+      - web:web
+
+  postgres:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
