@@ -1,0 +1,110 @@
+{% extends 'stockCRM/base.html' %}
+{% load static %}
+{% block title %} Product List {% endblock%}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1>Products</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-center">
+        {% if user.user_type == 1 %}
+          <a class="btn btn-info mb-1" href="{% url 'product_create' %}">Create new product</a>
+          <a class="btn btn-success mb-1" href="{% url 'user_create' %}">Create new user</a>
+          <a class="btn btn-danger mb-1" href="{% url 'user_list' %}">Show user list</a>
+        {% endif %}
+        <a class="btn btn-primary mb-1" href="{% url 'signout' %}">Sign out</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-center">
+        <table class="table table-hover mt-1">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in products %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ p.name }}</td>
+                <td class="quantityCell">{{ p.quantity }}</td>
+                <td>{{ p.get_status_display }}</td>
+                <td>
+                  <a class="btn btn-info" href="{% url 'product_view' p.id %}">View</a>
+                  {% if user.user_type == 1 or user.user_type == 2 and p.status == 'NA' %}
+                    <a class="btn btn-success" href="{% url 'product_update' p.id %}">Edit</a>
+                  {% endif %}
+                  {% if user.user_type == 1 %}
+                    <button type="button" class="btn btn-danger openDeleteProductForm" data-toggle="modal" data-target="#deleteProductModal" data-id="{{ p.id }}" data-title="{{ p.name }}">Delete</button>
+                  {% endif %}
+                  {% if user.user_type == 1 or user.user_type == 3 %}
+                    <button type="button" class="btn btn-primary openSellProductForm" data-toggle="modal" data-target="#sellProductModal" data-id="{{ p.id }}">Sell products</button>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade formMainModal my-5" id="sellProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+        <form method="post" action="{% url 'product_sell' %}" id="myForm">
+          {% csrf_token %}
+	      <div class="modal-body">
+            <div class="errors_text" id="errorBlock"></div>
+            <div class="form-group">
+              {{ form.product_id.errors }}
+              {{ form.product_id }}
+	        </div>
+            <div class="form-group">
+	          {{ form.quantity.label_tag }}
+              {{ form.quantity.errors }}
+              {{ form.quantity }}
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-primary">Submit</button>
+	      </div>
+        </form>
+	  </div>
+	</div>
+  </div>
+
+  <div class="modal fade formMainModal my-5" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+	  <div class="modal-content">
+        <form method="post" action="{% url 'product_delete' %}" id="ProductDeleteForm">
+          {% csrf_token %}
+	      <div class="modal-body">
+            <div class="errors_text" id="errorDeleteBlock"></div>
+            <div>Are you sure you want to delete the product <span class="font-weight-bold" id="productTitle"></span>?</div>
+            <div class="form-group">
+              {{ delete_product_form.prod_id }}
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+	        <button type="submit" class="btn btn-primary">Yes</button>
+	      </div>
+        </form>
+	  </div>
+	</div>
+  </div>
+{% endblock %}
+{% block js %}
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'stockCRM/base.html' %}
+{% load static %}
+{% block title %} Product Detail {% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-5 text-center mt-5 py-5 bg-info d-block mx-auto text-light rounded-circle">
+        <h1>Title: {{ product.name }}</h1>
+        <p>Quantity: {{ product.quantity }} pts</p>
+        <p>Availability: {{ product.get_status_display }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

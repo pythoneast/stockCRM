@@ -1,0 +1,13 @@
+{% extends 'stockCRM/base.html' %}
+{% load static %}
+{% block title %} User Detail {% endblock%}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-10 col-md-6 col-lg-5 text-center mt-5 py-5 bg-info d-block mx-auto text-light rounded-circle">
+        <h1>{{ user.firstname }} {{ user.surname }}</h1>
+        <p>{{ user.get_user_type_display }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

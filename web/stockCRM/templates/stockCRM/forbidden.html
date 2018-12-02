@@ -1,0 +1,25 @@
+{% extends 'stockCRM/base.html' %}
+{% load static %}
+{% block title %} Forbidden {% endblock%}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12 pt-5 pb-3">
+        <h1 class="text-center">The stock CRM</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-10 col-md-6 col-lg-4 d-block mx-auto text-center text-light">
+        <div class="py-5 px-5 bg-danger border border-light rounded">
+          <p>
+            <b>
+              You do not have permission to perform this operation!
+              Please, check whether you have permissions!
+            </b>
+          </p>
+          <a class="text-light" href="{% url 'product_list' %}">Back to Main Page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,4 +1,6 @@
 #!/bin/bash
+
+sleep 5
 python3.6 manage.py migrate
 python3.6 manage.py collectstatic --noinput
 echo Starting Gunicorn

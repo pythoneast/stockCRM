@@ -1,0 +1,30 @@
+{% extends 'stockCRM/base.html' %}
+{% load static %}
+{% block title %} Sign In {% endblock%}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12 pt-5 pb-3">
+        <h1 class="text-center">The stock CRM</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-10 col-md-6 col-lg-4 d-block mx-auto text-light">
+        <form action="{% url 'signin' %}" method="post" class="py-5 px-5 bg-info border border-light rounded">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="id_username">Username:</label>
+            <input type="text" name="username" class="form-control" maxlength="50" required="" id="id_username">
+          </div>
+          <div class="form-group">
+            <label for="id_password">Password:</label>
+            <input type="password" name="password" class="form-control" maxlength="50" required="" id="id_password">
+          </div>
+          <div class="text-center">
+            <input type="submit" value="Submit" class="btn btn-danger border-light"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
