@@ -11,7 +11,7 @@ services:
 
   web:
     restart: always
-    build: 
+    build:
       context: ./web
       target: dev
     command: python manage.py runserver 0.0.0.0:8005
