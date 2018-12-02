@@ -4,6 +4,8 @@ services:
   web:
     restart: always
     build: ./web
+    depends_on:
+      - postgres
     expose:
       - "8000"
     links:
